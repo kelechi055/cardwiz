@@ -66,4 +66,4 @@ export default function Generate() {
       
       {/* We'll add flashcard display here */}
     </Container>
-  );
+  )
