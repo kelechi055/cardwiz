@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image";
-import { SignedIn, SignedOut, UserButton, SignIn } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignIn, SignUp } from "@clerk/nextjs";
 import { Box, AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import Head from 'next/head';
@@ -20,8 +20,8 @@ export default function SignInPage() {
   }}
 >
       <Head>
-        <title>Sign In - CardWiz</title>
-        <meta name="description" content="Sign in to your CardWiz account" />
+        <title>Sign Up - CardWiz</title>
+        <meta name="description" content="Sign up for a CardWiz account" />
         <link rel="icon" href="/cardwizard.png" />
       </Head>
 
@@ -77,7 +77,7 @@ export default function SignInPage() {
             </Button>
             <Button 
               color="inherit" 
-              href="/sign-up" 
+              href="/sign-in" 
               sx={{ 
                 fontWeight: 'normal', 
                 textTransform: 'none',
@@ -87,7 +87,7 @@ export default function SignInPage() {
                 }
               }}
             >
-              Sign Up
+              Sign In
             </Button>
           </SignedOut>
           <SignedIn>
@@ -97,7 +97,7 @@ export default function SignInPage() {
       </AppBar>
       {/* Navbar End */}
 
-      {/* Sign In Section */}
+      {/* Sign Up Section */}
       <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
         <Box sx={{ width: '100%', maxWidth: '400px', textAlign: 'center' }}>
           <Typography 
@@ -110,9 +110,9 @@ export default function SignInPage() {
               animation: 'slideDown 1s',
             }}
           >
-            Welcome Back to CardWiz!
+            Welcome to CardWiz! Sign Up to access your account.
           </Typography>
-          <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+          <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
         </Box>
       </Box>
     </Box>

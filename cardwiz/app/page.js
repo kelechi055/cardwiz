@@ -44,9 +44,11 @@ export default function Home() {
       }}
     >
       <Head>
-        <title>CardWiz</title>
-        <meta name="description" content="Your Best Studying Companion" />
-        <link rel="icon" href="/cardwizard.png" />
+        <Button>
+          <title>CardWiz</title>
+          <meta name="description" content="Your Best Studying Companion" />
+          <link rel="icon" href="/cardwizard.png" />
+        </Button>
       </Head>
 
       {/* Navbar */}
@@ -189,7 +191,7 @@ export default function Home() {
             px: 2 
           }}
         >
-          Elevate your exam preparation with our dynamic flashcards, expertly designed to optimize learning and improve retention. 
+          Elevate your exam preparation with our dynamic ai-powered flashcards, expertly designed to optimize learning and improve retention. 
         </Typography>
 
         <br></br>
