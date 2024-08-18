@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
+  border-radius: 50%;
+  opacity: var(--alpha);
+  transform: translate(var(--x), var(--y));
+  animation: particleAnimation var(--duration)s linear infinite;
+  animation-delay: var(--delay)s;
+}
+
+@keyframes particleAnimation {
+  0% {
+    transform: translate(var(--origin-x), var(--origin-y)) scale(var(--size));
+    opacity: var(--alpha);
+  }
+  100% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+}
+
+.MenuItem:hover {
+  background-color: #f1f1f1 ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.test {
+  animation: fadeOut 2s forwards ease-in-out;
+  animation-timeline: scroll;
+}
+
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+
+  to {
+      opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+
