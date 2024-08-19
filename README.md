@@ -1,2 +1,2 @@
-# Cardwiz: Your AI Flashcard Generator
+# Cardwiz: Your AI Flashcard Generator 🧙‍♂️
  
