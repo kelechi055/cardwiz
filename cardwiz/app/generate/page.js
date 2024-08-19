@@ -277,7 +277,7 @@ export default function Generate() {
         {/* Navbar End */}
 
         <Container>
-          <Box sx={{ my: 4, color: 'white', fontFamily: 'Inter' }}>
+          <Box sx={{ my: 4, color: 'white', fontFamily: 'Inter', textAlign: 'center' }}>
             <Typography
               variant="h1"
               component="h1"
@@ -287,12 +287,10 @@ export default function Generate() {
                 fontFamily: 'Inter',
                 fontWeight: 'bold',
                 fontSize: { xs: '1.5rem', sm: '2.5rem', md: '3.5rem' },
-                textAlign: 'center',
               }}
             >
               Generate Some Flashcards!🧙‍♂️
             </Typography>
-            <br />
             <TextField
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -359,9 +357,9 @@ export default function Generate() {
               <CircularProgress />
             </Box>
           ) : flashcards.length > 0 && (
-            <Box sx={{ mt: 4, }}>
+            <Box sx={{ mt: 4 }}>
               <Typography variant="h5" component="h2" color={'white'} gutterBottom>Flashcards Successfully Generated!</Typography> <br></br>
-              <Grid container spacing={5}>
+              <Grid container spacing={5} justifyContent="center">
                 {flashcards.map((flashcard, index) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                     <Card
@@ -402,7 +400,7 @@ export default function Generate() {
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                padding: 2,
+                                padding: 1,
                                 boxSizing: 'border-box',
                                 backgroundColor: '#fff',
                                 borderRadius: '8px',
@@ -433,30 +431,32 @@ export default function Generate() {
                   </Grid>
                 ))}
               </Grid>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleOpen}
-                sx={{
-                  mt: 4,
-                  fontSize: { xs: '1rem', sm: '1.5rem' },
-                  fontWeight: '500',
-                  fontFamily: 'Inter',
-                  color: 'white',
-                  position: 'relative',
-                  animation: 'slideUp 1s ease-in-out',
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  px: 4,
-                  '&:hover': {
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-                    opacity: 0.9,
-                    backgroundImage: 'linear-gradient(purple)',
-                  },
-                }}
-              >
-                Save Flashcards
-              </Button>
+              <br></br>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleOpen}
+                  sx={{
+                    fontSize: { xs: '1rem', sm: '1.5rem' },
+                    fontWeight: '500',
+                    fontFamily: 'Inter',
+                    color: 'white',
+                    position: 'relative',
+                    animation: 'slideUp 1s ease-in-out',
+                    textTransform: 'none',
+                    borderRadius: 2,
+                    px: 4,
+                    '&:hover': {
+                      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                      opacity: 0.9,
+                      backgroundImage: 'linear-gradient(purple)',
+                    },
+                  }}
+                >
+                  Save Flashcards
+                </Button>
+              </Box>
             </Box>
           )}
         </Container>
@@ -467,30 +467,30 @@ export default function Generate() {
 
         {/* Footer */}
         <Box sx={{ py: 1, textAlign: 'center' }}>
-        <Typography 
-          variant="h1" 
-          color={grey[500]}
-          sx={{ 
-            color: '#E0E0E0', 
-            fontFamily: 'Inter',
-            fontWeight: 'light',
-            fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
-          }}
-        >
-          © 2024 CardWiz. Built by{' '}
-          <Link 
-            href="https://linkedin.com/in/kelechi-opurum" 
-            color="inherit" 
-            underline="hover" 
+          <Typography 
+            variant="h1" 
+            color={grey[500]}
             sx={{ 
-              fontWeight: 'bold', 
-              color: 'white'
+              color: '#E0E0E0', 
+              fontFamily: 'Inter',
+              fontWeight: 'light',
+              fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
             }}
           >
-            Kelechi
-          </Link> 
-          . All rights reserved.
-      </Typography>
+            © 2024 CardWiz. Built by{' '}
+            <Link 
+              href="https://linkedin.com/in/kelechi-opurum" 
+              color="inherit" 
+              underline="hover" 
+              sx={{ 
+                fontWeight: 'bold', 
+                color: 'white'
+              }}
+            >
+              Kelechi
+            </Link> 
+            . All rights reserved.
+          </Typography>
         </Box>
       </Box>
     </Container>
