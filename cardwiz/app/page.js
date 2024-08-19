@@ -1,9 +1,8 @@
 'use client';
 import Image from "next/image";
-import { db } from "@/firebase";
 import { useRouter } from 'next/navigation'; 
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Container, AppBar, Toolbar, Typography, Button, Box, Grid, Card, CardContent, MenuItem } from "@mui/material";
+import { Container, AppBar, Toolbar, Typography, Button, Box, Grid, Card, CardContent, Link, MenuItem } from "@mui/material";
 import Head from 'next/head';
 import getStripe from '@/utils/get-stripe';
 import { grey } from "@mui/material/colors";
@@ -600,12 +599,24 @@ export default function Home() {
           sx={{ 
             color: '#E0E0E0', 
             fontFamily: 'Inter',
-            fontWeight: 'light ',
+            fontWeight: 'light',
             fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
           }}
         >
-          © 2024 CardWiz. All rights reserved.
-        </Typography>
+          © 2024 CardWiz. Built by{' '}
+          <Link 
+            href="https://linkedin.com/in/kelechi-opurum" 
+            color="inherit" 
+            underline="hover" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'white'
+            }}
+          >
+            Kelechi
+          </Link> 
+          . All rights reserved.
+      </Typography>
       </Box>
     </Box>
   );

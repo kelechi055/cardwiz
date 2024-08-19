@@ -20,6 +20,7 @@ import {
   Toolbar,
   CircularProgress,
   CardActionArea,
+  Link,
 } from '@mui/material';
 import { useUser } from '@clerk/nextjs';
 import { writeBatch, collection, doc, getDoc } from 'firebase/firestore';
@@ -466,18 +467,30 @@ export default function Generate() {
 
         {/* Footer */}
         <Box sx={{ py: 1, textAlign: 'center' }}>
-          <Typography
-            variant="h1"
-            color={grey[500]}
-            sx={{
-              color: '#E0E0E0',
-              fontFamily: 'Inter',
-              fontWeight: 'light',
-              fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' },
+        <Typography 
+          variant="h1" 
+          color={grey[500]}
+          sx={{ 
+            color: '#E0E0E0', 
+            fontFamily: 'Inter',
+            fontWeight: 'light',
+            fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
+          }}
+        >
+          © 2024 CardWiz. Built by{' '}
+          <Link 
+            href="https://linkedin.com/in/kelechi-opurum" 
+            color="inherit" 
+            underline="hover" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'white'
             }}
           >
-            © 2024 CardWiz. All rights reserved.
-          </Typography>
+            Kelechi
+          </Link> 
+          . All rights reserved.
+      </Typography>
         </Box>
       </Box>
     </Container>
