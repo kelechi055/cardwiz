@@ -152,51 +152,65 @@ export default function Home() {
             </Button>
           </SignedOut>
           <SignedIn>
-            <Button 
-              color="inherit" 
-              href="/" 
-              sx={{ 
-                fontWeight: 'normal', 
-                textTransform: 'none',
-                color: '#999999',
-                '&:hover': {
-                  color: '#f1f1f1'
-                }
-              }}
-            >
-              Home
-            </Button>
-            <Button 
-              color="inherit" 
-              href="/generate" 
-              sx={{ 
-                fontWeight: 'normal', 
-                textTransform: 'none',
-                color: '#999999',
-                '&:hover': {
-                  color: '#f1f1f1',
-                }
-              }}
-            >
-              Generate
-            </Button>
-            <Button 
-              color="inherit" 
-              href="#pricing" 
-              sx={{ 
-                fontWeight: 'normal', 
-                textTransform: 'none',
-                marginRight: '16px' ,
-                color: '#999999',
-                '&:hover': {
-                  color: '#f1f1f1',
-                }
-              }}
-            >
-              Pricing
-            </Button>
-            <UserButton />
-          </SignedIn>
+              <Button 
+                color="inherit" 
+                href="/" 
+                sx={{ 
+                  fontWeight: 'normal', 
+                  textTransform: 'none',
+                  color: '#999999',
+                  '&:hover': {
+                    color: '#f1f1f1'
+                  }
+                }}
+              >
+                Home
+              </Button>
+              <Button 
+                color="inherit" 
+                href="/generate" 
+                sx={{ 
+                  fontWeight: 'normal', 
+                  textTransform: 'none',
+                  color: '#999999',
+                  '&:hover': {
+                    color: '#f1f1f1',
+                  }
+                }}
+              >
+                Generate
+              </Button>
+              <Button 
+                color="inherit" 
+                href="/flashcards" 
+                sx={{ 
+                  fontWeight: 'normal', 
+                  textTransform: 'none',
+                  color: '#999999',
+                  '&:hover': {
+                    color: '#f1f1f1',
+                  }
+                }}
+              >
+                Saved
+              </Button>
+              <Button 
+                color="inherit" 
+                href="/#pricing" 
+                sx={{ 
+                  fontWeight: 'normal', 
+                  textTransform: 'none',
+                  marginRight: '16px' ,
+                  color: '#999999',
+                  '&:hover': {
+                    color: '#f1f1f1',
+                  }
+                }}
+              >
+                Pricing
+              </Button>
+              <UserButton />
+            </SignedIn>
         </Toolbar>
         <Toolbar sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'space-between' }}>
           <Button
@@ -233,19 +247,20 @@ export default function Home() {
         onClose={handleDrawerToggle}
       >
         <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle} onKeyDown={handleDrawerToggle}>
-          <List>
-            <SignedOut>
-              <ListItem button component="a" href="#home">Home</ListItem>
-              <ListItem button component="a" href="#features">Features</ListItem>
-              <ListItem button component="a" href="#pricing">Pricing</ListItem>
-              <ListItem button component="a" href="/sign-in">Login</ListItem>
-              <ListItem button component="a" href="/sign-up">Sign Up</ListItem>
-            </SignedOut>
-            <SignedIn>
-              <ListItem button component="a" href="/">Home</ListItem>
-              <ListItem button component="a" href="/generate">Generate</ListItem>
-              <ListItem button component="a" href="#pricing">Pricing</ListItem>
-            </SignedIn>
+        <List>
+              <SignedOut>
+                <ListItem button component="a" href="/#home">Home</ListItem>
+                <ListItem button component="a" href="/#features">Features</ListItem>
+                <ListItem button component="a" href="/#pricing">Pricing</ListItem>
+                <ListItem button component="a" href="/sign-in">Login</ListItem>
+                <ListItem button component="a" href="/sign-up">Sign Up</ListItem>
+              </SignedOut>
+              <SignedIn>
+                <ListItem button component="a" href="/">Home</ListItem>
+                <ListItem button component="a" href="/generate">Generate</ListItem>
+                <ListItem button component="a" href="/flashcards">Saved</ListItem>
+                <ListItem button component="a" href="#pricing">Pricing</ListItem>
+              </SignedIn>
           </List>
         </Box>
       </Drawer>

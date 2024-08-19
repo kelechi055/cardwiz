@@ -24,6 +24,12 @@ import {
   List,
   ListItem,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useUser } from '@clerk/nextjs';
@@ -34,7 +40,6 @@ export default function Generate() {
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [text, setText] = useState('');
-  const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(''); 
@@ -94,39 +99,54 @@ export default function Generate() {
     setOpen(!open);
   };
 
+  const HandleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  //SAVING THE FLASHCARDS
+  const [setName, setSetName] = useState('')
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const handleOpenDialog = () => setDialogOpen(true)
+  const handleCloseDialog = () => setDialogOpen(false)
+
   const saveFlashcards = async () => {
-    if (!name) {
-      alert('Please enter a name for your flashcard set');
-      return;
+    if (!setName.trim()) {
+      alert('Please enter a name for your flashcard set.')
+      return
     }
-
-    const batch = writeBatch(db);
-    const userDocRef = doc(db, 'users', user.id);
-    const docSnap = await getDoc(userDocRef);
-
-    if (docSnap.exists()) {
-      const collections = docSnap.data().flashcards || [];
-      if (collections.find((f) => f.name === name)) {
-        alert('A flashcard collection with that name already exists');
-        return;
+  
+    try {
+      const userDocRef = doc(collection(db, 'users'), user.id)
+      const userDocSnap = await getDoc(userDocRef)
+  
+      const batch = writeBatch(db)
+  
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data()
+        const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
+        batch.update(userDocRef, { flashcardSets: updatedSets })
       } else {
-        collections.push({ name });
-        batch.set(userDocRef, { flashcards, collections }, { merge: true });
+        batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
       }
-    } else {
-      batch.set(userDocRef, { flashcards: [{ name }] });
+  
+      const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
+      batch.set(setDocRef, { flashcards })
+  
+      await batch.commit()
+  
+      alert('Flashcards saved successfully!')
+      handleCloseDialog()
+      setSetName('')
+    } catch (error) {
+      console.error('Error saving flashcards:', error)
+      alert('An error occurred while saving flashcards. Please try again.')
     }
-
-    const colRef = collection(userDocRef, name);
-    flashcards.forEach((flashcard) => {
-      const cardDocRef = doc(colRef);
-      batch.set(cardDocRef, flashcard);
-    });
-
-    await batch.commit();
-    handleDrawerToggle(); // Closes drawer of the hamburger menu
-    router.push('/flashcards');
-  };
+  }
 
   if (!isLoaded || !isSignedIn) {
     return null; 
@@ -273,7 +293,21 @@ export default function Generate() {
               </Button>
               <Button 
                 color="inherit" 
-                href="#pricing" 
+                href="/flashcards" 
+                sx={{ 
+                  fontWeight: 'normal', 
+                  textTransform: 'none',
+                  color: '#999999',
+                  '&:hover': {
+                    color: '#f1f1f1',
+                  }
+                }}
+              >
+                Saved
+              </Button>
+              <Button 
+                color="inherit" 
+                href="/#pricing" 
                 sx={{ 
                   fontWeight: 'normal', 
                   textTransform: 'none',
@@ -340,6 +374,7 @@ export default function Generate() {
               <SignedIn>
                 <ListItem button component="a" href="/">Home</ListItem>
                 <ListItem button component="a" href="/generate">Generate</ListItem>
+                <ListItem button component="a" href="/flashcards">Saved</ListItem>
                 <ListItem button component="a" href="#pricing">Pricing</ListItem>
               </SignedIn>
             </List>
@@ -365,7 +400,7 @@ export default function Generate() {
             <TextField
               value={text}
               onChange={(e) => setText(e.target.value)}
-              label="Make flashcards on any topic... ✨"
+              label="Make flashcards on any topic... 🔮"
               fullWidth
               multiline
               rows={4}
@@ -375,6 +410,7 @@ export default function Generate() {
                 '& .MuiInputLabel-root': {
                   color: 'white',
                   fontFamily: 'Inter',
+                  fontSize: '1.0rem',
                 },
                 '& .MuiOutlinedInput-root': {
                   '& input': {
@@ -394,7 +430,7 @@ export default function Generate() {
                 },
               }}
               InputLabelProps={{ style: { color: 'white' } }}
-              InputProps={{ style: { color: 'white', fontSize: '2.0rem', fontFamily: 'Inter' } }}
+              InputProps={{ style: { color: 'white', fontSize: '1.5rem', fontFamily: 'Inter' } }}
             />
             <Button
               sx={{
@@ -419,7 +455,7 @@ export default function Generate() {
               onClick={handleSubmit}
               fullWidth
             >
-              Generate 🪄
+              Generate ✨
             </Button>
             {error && (
               <Typography variant="body1" color="error" sx={{ mt: 2 }}>
@@ -518,6 +554,7 @@ export default function Generate() {
                 <Button
                   variant="contained"
                   color="secondary"
+                  onClick={handleOpenDialog}
                   sx={{
                     fontSize: { xs: '1rem', sm: '1.5rem' },
                     fontWeight: '500',
@@ -526,7 +563,7 @@ export default function Generate() {
                     position: 'relative',
                     animation: 'slideUp 1s ease-in-out',
                     textTransform: 'none',
-                    borderRadius: 2,
+                    borderRadius: 15,
                     px: 4,
                     '&:hover': {
                       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
@@ -540,6 +577,56 @@ export default function Generate() {
               </Box>
             </Box>
           )}
+
+        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+          <DialogTitle
+          sx={{
+            backgroundImage: 'linear-gradient(to bottom, purple, black)',
+            color: 'white',
+            fontFamily: 'Inter',
+          }}
+          >Save Flashcard Set</DialogTitle>
+          <DialogContent
+          sx={{
+            fontFamily: 'Inter',
+          }}
+          >
+            <DialogContentText
+          sx={{
+            fontFamily: 'Inter',
+          }}
+            >
+              Please enter a name for your flashcard set.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Set Name"
+              type="text"
+              fullWidth
+              value={setName}
+              onChange={(e) => setSetName(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}
+          sx={{
+            fontFamily: 'Inter',
+            textTransform: 'none',
+            color: 'Red',
+          }}
+            >Cancel</Button>
+            <Button onClick={saveFlashcards} color="primary"
+          sx={{
+            fontFamily: 'Inter',
+            textTransform: 'none',
+            color: 'Green',
+          }}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
         </Container>
 
         <br />
