@@ -2,7 +2,6 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: 'Hanken Grotesk', sans-serif;
 }
 
 body {
@@ -10,18 +9,6 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
-}
-
-.particle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
-  border-radius: 50%;
-  opacity: var(--alpha);
-  transform: translate(var(--x), var(--y));
-  animation: particleAnimation var(--duration)s linear infinite;
-  animation-delay: var(--delay)s;
 }
 
 @keyframes particleAnimation {
@@ -38,6 +25,8 @@ body {
 .MenuItem:hover {
   background-color: #f1f1f1 ease-in-out;
 }
+
+/* Smooth scroll hrefs*/
 
 html {
   scroll-behavior: smooth;
@@ -85,5 +74,3 @@ html {
     transform: translateY(0%);
   }
 }
-
-

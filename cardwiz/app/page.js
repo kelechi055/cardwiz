@@ -1,5 +1,7 @@
 'use client';
 import Image from "next/image";
+import { db } from "@/firebase";
+import { useRouter } from 'next/navigation'; 
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Container, AppBar, Toolbar, Typography, Button, Box, Grid, Card, CardContent, MenuItem } from "@mui/material";
 import Head from 'next/head';
@@ -30,6 +32,11 @@ export default function Home() {
       console.warn(error.message);
     }
   }
+  const router = useRouter();
+  const handleNavClick = (path) => {
+    router.push(path);
+  };
+
 
   return (
     <Box 
@@ -38,23 +45,33 @@ export default function Home() {
         flexDirection: 'column',
         minHeight: '100vh',
         background: 'linear-gradient(to bottom, black 0%, #17061E 20%, #7b1fa2 80%, #7b1fa2 80%, black 100%)',
-        fontFamily: 'Hanken_Grotesk, Inter',
+        fontFamily: 'Inter',
         padding: 0,
         margin: 0
       }}
     >
       <Head>
-        <Button>
+        <Button
+        fontFamily={'Inter'}
+        >
           <title>CardWiz</title>
           <meta name="description" content="Your Best Studying Companion" />
-          <link rel="icon" href="/cardwizard.png" />
         </Button>
       </Head>
 
       {/* Navbar */}
-      <AppBar position="static" sx={{ backgroundColor: 'black', width: '100%', }}>
+      <AppBar position="static" sx={{ backgroundColor: 'black' }}>
         <Toolbar>
-          <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+          <Button
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              p: 0 
+            }}
+            onClick={() => handleNavClick('/')} 
+          >
+            <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+          </Button>
           <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff' }}>
             CardWiz
           </Typography>
@@ -131,48 +148,93 @@ export default function Home() {
             </Button>
           </SignedOut>
           <SignedIn>
+            <Button 
+              color="inherit" 
+              href="/" 
+              sx={{ 
+                fontWeight: 'normal', 
+                textTransform: 'none',
+                color: '#999999',
+                '&:hover': {
+                  color: '#f1f1f1'
+                }
+              }}
+            >
+              Home
+            </Button>
+            <Button 
+              color="inherit" 
+              href="/generate" 
+              sx={{ 
+                fontWeight: 'normal', 
+                textTransform: 'none',
+                color: '#999999',
+                '&:hover': {
+                  color: '#f1f1f1',
+                }
+              }}
+            >
+              Generate
+            </Button>
+            <Button 
+              color="inherit" 
+              href="#pricing" 
+              sx={{ 
+                fontWeight: 'normal', 
+                textTransform: 'none',
+                marginRight: '16px' ,
+                color: '#999999',
+                '&:hover': {
+                  color: '#f1f1f1',
+                }
+              }}
+            >
+              Pricing
+            </Button>
             <UserButton />
           </SignedIn>
         </Toolbar>
       </AppBar>
+
+
       {/* Navbar End*/}
 
       {/* Hero Section */}
       <Box id="home" sx={{ flex: 1, textAlign: 'center', my: 4, color: 'white' }}>
-        <Typography class = "title"
-          variant="h1" 
-          component="h1" 
-          gutterBottom 
-          sx={{ 
-            fontWeight: 'bold',
-            fontFamily: 'Hanken_Grotesk, Inter',
-            fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' }, 
-            lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
-            animation: 'slideDown 2s ease-in-out',
-            mx: { xs: 2, sm: 4 }, 
-            px: 2 
-          }}
-        >
-          <br></br>
-          <br></br>
-          Dominate Exams
-        </Typography>
-        <Typography class = "title"
-          variant="h1" 
-          component="h1" 
-          gutterBottom 
-          sx={{ 
-            fontWeight: 'bold', 
-            fontFamily: 'Hanken_Grotesk, Inter',
-            fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' }, 
-            lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
-            animation: 'slideDown 2s ease-in-out',
-            mx: { xs: 2, sm: 4 }, 
-            px: 2 
-          }}
-        >
-          With AI.
-        </Typography>
+      <Typography 
+        variant="h1" 
+        component="h1" 
+        gutterBottom 
+        sx={{ 
+          fontWeight: 'bold', 
+          fontFamily: 'Inter',
+          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' }, 
+          lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
+          animation: 'slideDown 2s ease-in-out',
+          mx: { xs: 2, sm: 4 }, 
+          px: 2 
+        }}
+      >
+        <br></br>
+        <br></br>
+        Dominate Exams
+      </Typography>
+      <Typography 
+        variant="h1" 
+        component="h1" 
+        gutterBottom 
+        sx={{ 
+          fontWeight: 'bold', 
+          fontFamily: 'Inter',
+          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' }, 
+          lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
+          animation: 'slideDown 2s ease-in-out',
+          mx: { xs: 2, sm: 4 }, 
+          px: 2 
+        }}
+      >
+        With AI.
+      </Typography>
         <br></br>
         <br></br>
         <br></br>
@@ -366,7 +428,8 @@ export default function Home() {
                 <br></br>
               <Button 
                 variant="contained" 
-                color="primary" 
+                color="primary"
+                href="/sign-up"
                 
                 sx={{ mt: 2, fontSize: { xs: '0.875rem', sm: '1rem', fontWeight: 'normal', textTransform: 'none', backgroundColor: 'grey', '&:hover': {backgroundColor: '#606060'}} }}
               >

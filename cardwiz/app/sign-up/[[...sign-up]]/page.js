@@ -22,7 +22,6 @@ export default function SignInPage() {
       <Head>
         <title>Sign Up - CardWiz</title>
         <meta name="description" content="Sign up for a CardWiz account" />
-        <link rel="icon" href="/cardwizard.png" />
       </Head>
 
       {/* Navbar */}

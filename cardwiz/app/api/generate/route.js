@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const systemPrompt = `
-You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
+You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 12 flashcards.
 Both front and back should be one sentence long.
 
 1. Create clear and concise questions for the front of the flashcard.
@@ -17,7 +17,7 @@ Both front and back should be one sentence long.
 8. Tailor the difficulty level of the flashcards to the user's specified preferences.
 9. If given a body of text, extract the most important and relevant information for the flashcards.
 10. Aim to create a balanced set of flashcards that covers the topic comprehensively.
-11. Only generate 10 flashcards per request.
+11. Only generate 12 flashcards per request.
 
 Remember, the goal is to facilitate effective learning and retention of information through these flashcards.
 

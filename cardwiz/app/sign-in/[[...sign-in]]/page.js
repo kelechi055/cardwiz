@@ -12,9 +12,9 @@ export default function SignInPage() {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    backgroundImage: 'url(/signin.png)', 
-    backgroundSize: 'cover', 
-    backgroundPosition: 'center', 
+    backgroundImage: 'url(/signin.png)', // Correct URL syntax
+    backgroundSize: 'cover', // Ensure the image covers the entire box
+    backgroundPosition: 'center', // Center the background image
     padding: 0,
     margin: 0,
   }}
