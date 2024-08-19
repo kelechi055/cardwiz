@@ -351,11 +351,19 @@ export default function Home() {
                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
                   <Image src="/greycheck.png" alt="Check" width={30} height={20} />
                   <Typography sx={{ fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem', fontFamily: 'Inter', }, ml: 1 }}>
-                  Limited storage
+                  Limited flashcard generation
                   </Typography>
                 </Box>
 
                 <br />
+                {/* Plan Option 2 */}
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                  <Image src="/greycheck.png" alt="Check" width={30} height={20} />
+                  <Typography sx={{ fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem', fontFamily: 'Inter', }, ml: 1 }}>
+                  Limited storage
+                  </Typography>
+                </Box>
+                <br></br>
               <Button 
                 variant="contained" 
                 color="primary" 
