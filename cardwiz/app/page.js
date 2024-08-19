@@ -1,14 +1,20 @@
 'use client';
 import Image from "next/image";
+import React from 'react';
 import { useRouter } from 'next/navigation'; 
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Container, AppBar, Toolbar, Typography, Button, Box, Grid, Card, CardContent, Link, MenuItem } from "@mui/material";
+import { Container, AppBar, Toolbar, Typography, Button, Box, Grid, Card, CardContent, Link, MenuItem, IconButton, Drawer, List, ListItem } from "@mui/material";
 import Head from 'next/head';
 import getStripe from '@/utils/get-stripe';
 import { grey } from "@mui/material/colors";
 import { Inter } from "next/font/google";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export default function Home() {
+  const [open, setOpen] = React.useState(false);
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
 
   const handleSubmit = async () => {
     const checkoutSession = await fetch('/api/checkout_session', {
@@ -31,11 +37,11 @@ export default function Home() {
       console.warn(error.message);
     }
   }
+
   const router = useRouter();
   const handleNavClick = (path) => {
     router.push(path);
   };
-
 
   return (
     <Box 
@@ -49,30 +55,29 @@ export default function Home() {
         margin: 0
       }}
     >
-      <Head>
-        <Button
-        fontFamily={'Inter'}
-        >
+        <Head>
           <title>CardWiz</title>
           <meta name="description" content="Your Best Studying Companion" />
-        </Button>
-      </Head>
+        </Head>
 
-      {/* Navbar */}
-      <AppBar position="static" sx={{ backgroundColor: 'black' }}>
-        <Toolbar>
+        {/* Navbar */}
+        <AppBar position="static" sx={{ backgroundColor: 'black' }}>
+        <Toolbar sx={{ display: { xs: 'none', sm: 'flex' } }}>
           <Button
-            sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              p: 0 
-            }}
-            onClick={() => handleNavClick('/')} 
-          >
-            <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
-          </Button>
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                p: 0 
+              }}
+              href="/" 
+            >
+              <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+              <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff', fontWeight: 'normal', textTransform: 'none' }}>
+                CardWiz
+              </Typography>
+            </Button>
           <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff' }}>
-            CardWiz
+            
           </Typography>
           <SignedOut>
             <Button 
@@ -193,7 +198,57 @@ export default function Home() {
             <UserButton />
           </SignedIn>
         </Toolbar>
+        <Toolbar sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'space-between' }}>
+          <Button
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center',
+              textTransform: 'none', 
+              p: 0 
+            }}
+            onClick={() => handleNavClick('/')} 
+          >
+            <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+            <Typography variant="h6" sx={{ color: '#fff' }}>
+              CardWiz
+            </Typography>
+          </Button>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <UserButton />
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={handleDrawerToggle}
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+      </Toolbar>
       </AppBar>
+      
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={handleDrawerToggle}
+      >
+        <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle} onKeyDown={handleDrawerToggle}>
+          <List>
+            <SignedOut>
+              <ListItem button component="a" href="#home">Home</ListItem>
+              <ListItem button component="a" href="#features">Features</ListItem>
+              <ListItem button component="a" href="#pricing">Pricing</ListItem>
+              <ListItem button component="a" href="/sign-in">Login</ListItem>
+              <ListItem button component="a" href="/sign-up">Sign Up</ListItem>
+            </SignedOut>
+            <SignedIn>
+              <ListItem button component="a" href="/">Home</ListItem>
+              <ListItem button component="a" href="/generate">Generate</ListItem>
+              <ListItem button component="a" href="#pricing">Pricing</ListItem>
+            </SignedIn>
+          </List>
+        </Box>
+      </Drawer>
 
 
       {/* Navbar End*/}
@@ -284,68 +339,76 @@ export default function Home() {
         </Button>
       </Box>
       
-      {/* Features Section */}
-      <Box id="features" sx={{ my: 4, color: 'white',  }}>
-        <Typography 
-          variant="h2" 
-          component="h2" 
-          gutterBottom 
-          sx={{ 
-            fontWeight: 'bold', 
-            color: 'white', 
-            textAlign: 'center',
-            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-            px: 2 
-          }}
-        >
-          <br></br>
-          <br></br>
-          Features
-        </Typography>
+    {/* Features Section */}
+    <Box 
+      id="features" 
+      sx={{ 
+        my: 4, 
+        color: 'white', 
+        px: { xs: 2, sm: 3, md: 4 },  // Added padding for different screen sizes
+      }}
+    >
+      <Typography 
+        variant="h2" 
+        component="h2" 
+        gutterBottom 
+        sx={{ 
+          fontWeight: 'bold', 
+          color: 'white', 
+          textAlign: 'center',
+          fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+          px: 2 
+        }}
+      >
         <br></br>
         <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
-              <CardContent>
-                <Image src="/flash.png" width={50} height={50} alt="Dynamic Flashcards" />
-                <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Dynamic Flashcards</Typography>
-                <Typography sx={{ mt: 1 }}>
-                  CardWiz AI transforms your text into concise, effective study tools.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
-              <CardContent>
-                <Image src="/personal.png" width={50} height={50} alt="Personalized Study Plans" />
-                <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Personalized Study Plans</Typography>
-                <Typography sx={{ mt: 1 }}>
-                  Customize your learning experience with plans tailored to your goals and skill level.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
-              <CardContent>
-                <Image src="/review.png" width={50} height={50} alt="Effective Review System" />
-                <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Effective Review System</Typography>
-                <Typography sx={{ mt: 1 }}>
-                  Revisit important topics at optimal times to enhance your retention and mastery.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        Features
+      </Typography>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <Grid container spacing={4} justifyContent="center">
+        <Grid item xs={12} sm={6} md={4}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+            <CardContent>
+              <Image src="/flash.png" width={50} height={50} alt="Dynamic Flashcards" />
+              <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Dynamic Flashcards</Typography>
+              <Typography sx={{ mt: 1 }}>
+                CardWiz AI transforms your text into concise, effective study tools.
+              </Typography>
+            </CardContent>
+          </Card>
         </Grid>
-      </Box>
+
+        <Grid item xs={12} sm={6} md={4}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+            <CardContent>
+              <Image src="/personal.png" width={50} height={50} alt="Personalized Study Plans" />
+              <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Personalized Study Plans</Typography>
+              <Typography sx={{ mt: 1 }}>
+                Customize your learning experience with plans tailored to your goals and skill level.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+            <CardContent>
+              <Image src="/review.png" width={50} height={50} alt="Effective Review System" />
+              <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Effective Review System</Typography>
+              <Typography sx={{ mt: 1 }}>
+                Revisit important topics at optimal times to enhance your retention and mastery.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
+
 
       {/* Pricing Section */}
       <Box id="pricing" sx={{ my: 6, textAlign: 'center' }}>

@@ -1,11 +1,10 @@
-'use client';
+'use client'
 import { useEffect, useState } from 'react';
 import { db } from "@/firebase";
 import { useRouter } from 'next/navigation'; 
 import Head from 'next/head';
 import Image from 'next/image';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import getStripe from '@/utils/get-stripe';
 import { grey } from '@mui/material/colors';
 import {
   Container,
@@ -21,7 +20,12 @@ import {
   CircularProgress,
   CardActionArea,
   Link,
+  Drawer,
+  List,
+  ListItem,
+  IconButton,
 } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useUser } from '@clerk/nextjs';
 import { writeBatch, collection, doc, getDoc } from 'firebase/firestore';
 
@@ -33,6 +37,7 @@ export default function Generate() {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(''); 
   const router = useRouter();
 
   useEffect(() => {
@@ -45,26 +50,39 @@ export default function Generate() {
     router.push(path);
   };
 
-  // Handle flashcard submissions
   const handleSubmit = async () => {
     setLoading(true);
-    fetch('/api/generate', {
-      method: 'POST',
-      body: text,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('API Response:', data);
-        setFlashcards(data.flashcards || []);
-      })
-      .catch((error) => {
-        console.error('Error fetching flashcards:', error);
-      })
-      .finally(() => {
-        setLoading(false);
+    setError(''); // Clear any previous errors that were generated from any previous flashcards
+    setFlashcards([]); // Clears any previous flashcards that the user generated
+  
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }), // Ensure the body is in JSON format
       });
+  
+      if (!response.ok) {
+        throw new Error('Failed to generate flashcards. Please enter a new input.');
+      }
+  
+      const data = await response.json();
+      
+      // This just checks if the flashcards are in the response and then it handle it accordingly
+      if (data.flashcards && Array.isArray(data.flashcards)) {
+        setFlashcards(data.flashcards);
+      } else {
+        throw new Error('Invalid flashcards data received.');
+      }
+    } catch (error) {
+      console.error('Error fetching flashcards:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
-
   const handleCardClick = (id) => {
     setFlipped((prev) => ({
       ...prev,
@@ -72,12 +90,8 @@ export default function Generate() {
     }));
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const handleDrawerToggle = () => {
+    setOpen(!open);
   };
 
   const saveFlashcards = async () => {
@@ -110,7 +124,7 @@ export default function Generate() {
     });
 
     await batch.commit();
-    handleClose();
+    handleDrawerToggle(); // Closes drawer of the hamburger menu
     router.push('/flashcards');
   };
 
@@ -135,137 +149,139 @@ export default function Generate() {
         <Head>
           <title>CardWiz</title>
           <meta name="description" content="Your Best Studying Companion" />
-          <link rel="icon" href="/cardwizard.png" />
         </Head>
 
         {/* Navbar */}
-        <AppBar position="static" sx={{ backgroundColor: 'black', width: '100%' }}>
-          <Toolbar>
-            <Button
+        <AppBar position="static" sx={{ backgroundColor: 'black' }}>
+        <Toolbar sx={{ display: { xs: 'none', sm: 'flex' } }}>
+          <Button
               sx={{ 
                 display: 'flex', 
                 alignItems: 'center', 
                 p: 0 
               }}
-              onClick={() => handleNavClick('/')} 
+              href="/" 
             >
               <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+              <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff', fontWeight: 'normal', textTransform: 'none' }}>
+                CardWiz
+              </Typography>
             </Button>
-            <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff' }}>
-              CardWiz
-            </Typography>
+          <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff' }}>
+            
+          </Typography>
             <SignedOut>
-              <Button
-                color="inherit"
-                href="/#home"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="#home" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
-                    color: '#f1f1f1',
-                  },
+                    color: '#f1f1f1'
+                  }
                 }}
               >
                 Home
               </Button>
-              <Button
-                color="inherit"
-                href="/#features"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="#features" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
-                    color: '#f1f1f1',
-                  },
+                    color: '#f1f1f1'
+                  }
                 }}
               >
                 Features
               </Button>
-              <Button
-                color="inherit"
-                href="/#pricing"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="#pricing" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
                     color: '#f1f1f1',
-                  },
+                  }
                 }}
               >
                 Pricing
               </Button>
-              <Button
-                color="inherit"
-                href="/sign-in"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="/sign-in" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
-                    color: '#f1f1f1',
-                  },
+                    color: '#f1f1f1'
+                  }
                 }}
               >
                 Login
               </Button>
-              <Button
-                color="inherit"
-                href="/sign-up"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="/sign-up" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
-                    color: '#f1f1f1',
-                  },
+                    color: '#f1f1f1'
+                  }
                 }}
               >
                 Sign Up
               </Button>
             </SignedOut>
             <SignedIn>
-              <Button
-                color="inherit"
-                href="/"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="/" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
-                    color: '#f1f1f1',
-                  },
+                    color: '#f1f1f1'
+                  }
                 }}
               >
                 Home
               </Button>
-              <Button
-                color="inherit"
-                href="/generate"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="/generate" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
                     color: '#f1f1f1',
-                  },
+                  }
                 }}
               >
                 Generate
               </Button>
-              <Button
-                color="inherit"
-                href="/#pricing"
-                sx={{
-                  fontWeight: 'normal',
+              <Button 
+                color="inherit" 
+                href="#pricing" 
+                sx={{ 
+                  fontWeight: 'normal', 
                   textTransform: 'none',
-                  marginRight: '16px',
+                  marginRight: '16px' ,
                   color: '#999999',
                   '&:hover': {
                     color: '#f1f1f1',
-                  },
+                  }
                 }}
               >
                 Pricing
@@ -273,7 +289,62 @@ export default function Generate() {
               <UserButton />
             </SignedIn>
           </Toolbar>
+          <Toolbar sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'space-between' }}>
+            <Button
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                textTransform: 'none', 
+                p: 0 
+              }}
+              onClick={() => handleNavClick('/')} 
+            >
+              <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+              <Typography variant="h6" sx={{ color: '#fff' }}>
+                CardWiz
+              </Typography>
+            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <UserButton />
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={handleDrawerToggle}
+                aria-label="menu"
+              >
+                <MenuIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
         </AppBar>
+
+        <Drawer
+          anchor="right"
+          open={open} 
+          onClose={handleDrawerToggle} // Close the hamburger menu drawer when clicked outside
+        >
+          <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={handleDrawerToggle} // Closes the hamburger menu drawer when an item is clicked
+            onKeyDown={handleDrawerToggle} // Closes the hamburger menu drawer when pressing key
+          >
+            <List>
+              <SignedOut>
+                <ListItem button component="a" href="/#home">Home</ListItem>
+                <ListItem button component="a" href="/#features">Features</ListItem>
+                <ListItem button component="a" href="/#pricing">Pricing</ListItem>
+                <ListItem button component="a" href="/sign-in">Login</ListItem>
+                <ListItem button component="a" href="/sign-up">Sign Up</ListItem>
+              </SignedOut>
+              <SignedIn>
+                <ListItem button component="a" href="/">Home</ListItem>
+                <ListItem button component="a" href="/generate">Generate</ListItem>
+                <ListItem button component="a" href="#pricing">Pricing</ListItem>
+              </SignedIn>
+            </List>
+          </Box>
+        </Drawer>
         {/* Navbar End */}
 
         <Container>
@@ -294,7 +365,7 @@ export default function Generate() {
             <TextField
               value={text}
               onChange={(e) => setText(e.target.value)}
-              label="Enter your text here... ✨"
+              label="Make flashcards on any topic... ✨"
               fullWidth
               multiline
               rows={4}
@@ -350,6 +421,11 @@ export default function Generate() {
             >
               Generate 🪄
             </Button>
+            {error && (
+              <Typography variant="body1" color="error" sx={{ mt: 2 }}>
+                {error}
+              </Typography>
+            )}
           </Box>
 
           {loading ? (
@@ -357,11 +433,16 @@ export default function Generate() {
               <CircularProgress />
             </Box>
           ) : flashcards.length > 0 && (
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="h5" component="h2" color={'white'} gutterBottom>Flashcards Successfully Generated!</Typography> <br></br>
-              <Grid container spacing={5} justifyContent="center">
+            <Box sx={{ mt: 4,}}>
+              <Typography variant="h5" component="h2" color={'white'} gutterBottom
+              sx={{
+                fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' },
+                font: 'Inter',
+                textAlign: 'center',
+              }}>Flashcards Successfully Generated!</Typography> <br></br><br></br>
+              <Grid container gap={8} justifyContent="center">
                 {flashcards.map((flashcard, index) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  <Grid item xs={9} sm={5} md={4} lg={3} key={index}>
                     <Card
                       sx={{
                         height: '300px',
@@ -384,6 +465,7 @@ export default function Generate() {
                               perspective: '1000px',
                               width: '100%',
                               height: '100%',
+                              
                               '& > div': {
                                 transition: 'transform 0.6s',
                                 transformStyle: 'preserve-3d',
@@ -436,7 +518,6 @@ export default function Generate() {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={handleOpen}
                   sx={{
                     fontSize: { xs: '1rem', sm: '1.5rem' },
                     fontWeight: '500',

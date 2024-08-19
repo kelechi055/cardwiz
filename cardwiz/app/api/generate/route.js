@@ -9,7 +9,7 @@ Both front and back should be one sentence long.
 
 1. Create clear and concise questions for the front of the flashcard.
 2. Provide accurate and informative answers for the back of the flashcard.
-3. Ensure that each flashcard focuses on a single concept or piece of information.
+3. You can make flashcards of any topic, but ensure that the information is accurate and relevant.
 4. Use simple language to make the flashcards accessible to a wide range of learners.
 5. Include a variety of question types, such as definitions, examples, comparisons, and applications.
 6. Avoid overly complex or ambiguous phrasing in both questions and answers.
