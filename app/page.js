@@ -9,6 +9,7 @@ import getStripe from '@/utils/get-stripe';
 import { grey } from "@mui/material/colors";
 import { Inter } from "next/font/google";
 import MenuIcon from '@mui/icons-material/Menu';
+import { Analytics } from "@vercel/analytics/react"
 
 export default function Home() {
   const [open, setOpen] = React.useState(false);

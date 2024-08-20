@@ -2,6 +2,7 @@ import { Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Hanken_Grotesk({ subsets: ["latin"] });
 
@@ -17,7 +18,10 @@ export default function RootLayout({ children }) {
         <Head>
           <link rel="icon" href="/cardwizard.png" />
         </Head>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          {children}
+          <Analytics /> 
+        </body>
       </html>
     </ClerkProvider>
   );
