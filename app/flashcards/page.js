@@ -393,9 +393,8 @@ export default function Flashcards() {
                 fontSize: { xs: '1.5rem', sm: '2.5rem', md: '3.5rem' },
               }}
             >
-              Your Flashcard Sets 📚
+              Your Saved Flashcard Sets 📚
             </Typography>
-            <Typography>doesnt work but coming soon!</Typography>
 
             {loading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', my: 4, color: 'white' }}>
