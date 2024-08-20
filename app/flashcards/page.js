@@ -33,7 +33,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useUser } from '@clerk/nextjs';
-import { collection, doc, getDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc, deleteDoc, updateDoc, getDocs } from 'firebase/firestore';
 
 export default function Flashcards() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -56,16 +56,37 @@ export default function Flashcards() {
   useEffect(() => {
     async function fetchFlashcards() {
       if (!user) return;
-      const docRef = doc(collection(db, 'users'), user.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const collections = docSnap.data().flashcardSets || [];
-        setFlashcards(collections);
-      } else {
-        await setDoc(docRef, { flashcardSets: [] });
+  
+      try {
+        setLoading(true);
+  
+        // Reference to the user's document
+        const userDocRef = doc(db, 'users', user.id);
+        const userDocSnap = await getDoc(userDocRef);
+  
+        if (userDocSnap.exists()) {
+          // Fetch the flashcard sets collection
+          const flashcardSetsCollectionRef = collection(userDocRef, 'flashcardSets');
+          const flashcardSetsSnap = await getDocs(flashcardSetsCollectionRef);
+  
+          // Extract flashcard sets data
+          const flashcardSets = flashcardSetsSnap.docs.map(setDoc => ({
+            id: setDoc.id,
+            ...setDoc.data() // Assuming doc.data() contains { name }
+          }));
+  
+          setFlashcards(flashcardSets);
+        } else {
+          console.log('User document does not exist');
+          setFlashcards([]);
+        }
+      } catch (error) {
+        console.error('Error fetching flashcards:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
+  
     fetchFlashcards();
   }, [user]);
 
@@ -73,8 +94,8 @@ export default function Flashcards() {
     setOpen(!open);
   };
 
-  const handleCardClick = (name) => {
-    router.push(`/flashcard?id=${name}`);
+  const handleCardClick = (setId) => {
+    router.push(`/flashcard?id=${setId}`);
   };
 
   const handleEditClick = (flashcard) => {

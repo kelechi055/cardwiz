@@ -33,7 +33,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useUser } from '@clerk/nextjs';
-import { writeBatch, collection, doc, getDoc } from 'firebase/firestore';
+import { writeBatch, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -116,37 +116,41 @@ export default function Generate() {
 
   const saveFlashcards = async () => {
     if (!setName.trim()) {
-      alert('Please enter a name for your flashcard set.')
-      return
+      alert('Please enter a name for your flashcard set.');
+      return;
     }
   
     try {
-      const userDocRef = doc(collection(db, 'users'), user.id)
-      const userDocSnap = await getDoc(userDocRef)
+      const userDocRef = doc(db, 'users', user.id); // Reference to the user document
+      const flashcardSetsCollectionRef = collection(userDocRef, 'flashcardSets');
+      const setDocRef = doc(flashcardSetsCollectionRef, setName); // Reference to the flashcard set document
   
-      const batch = writeBatch(db)
+      // Create or update the flashcard set document
+      await setDoc(setDocRef, { name: setName });
   
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data()
-        const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
-        batch.update(userDocRef, { flashcardSets: updatedSets })
-      } else {
-        batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
-      }
+      // Reference to the flashcards sub-collection within the set
+      const flashcardsCollectionRef = collection(setDocRef, 'flashcards');
+      
+      const batch = writeBatch(db);
+      
+      // Add each flashcard to the batch
+      flashcards.forEach((flashcard, index) => {
+        const flashcardDocRef = doc(flashcardsCollectionRef, index.toString());
+        batch.set(flashcardDocRef, flashcard);
+      });
   
-      const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-      batch.set(setDocRef, { flashcards })
+      // Commit the batch
+      await batch.commit();
   
-      await batch.commit()
-  
-      alert('Flashcards saved successfully!')
-      handleCloseDialog()
-      setSetName('')
+      alert('Flashcards saved successfully!');
+      handleCloseDialog();
+      setSetName('');
     } catch (error) {
-      console.error('Error saving flashcards:', error)
-      alert('An error occurred while saving flashcards. Please try again.')
+      console.error('Error saving flashcards:', error);
+      alert(`An error occurred while saving flashcards: ${error.message}`);
     }
-  }
+  };
+  
 
   if (!isLoaded || !isSignedIn) {
     return null; 
