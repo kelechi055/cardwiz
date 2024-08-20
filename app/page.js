@@ -50,7 +50,9 @@ export default function Home() {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        background: 'linear-gradient(to bottom, black 0%, #17061E 20%, #7b1fa2 80%, #7b1fa2 80%, black 100%)',
+        backgroundImage: 'url(/flashcardbg.png)', 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
         fontFamily: 'Inter',
         padding: 0,
         margin: 0
@@ -303,8 +305,9 @@ export default function Home() {
           px: 2 
         }}
       >
-        With AI.
-      </Typography>
+        With <span style={{ color: '#7720A0' }}>AI</span>.
+    </Typography>
+
         <br></br>
         <br></br>
         <br></br>
