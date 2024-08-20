@@ -34,7 +34,7 @@ export default function Flashcard() {
   
         if (userDocSnap.exists()) {
           // Fetch the list of flashcard set names
-          const collectionsSnapshot = await getDocs(collection(db, 'users', user.id));
+          const collectionsSnapshot = await getDocs(db, 'users', user.id);
           const flashcardSets = collectionsSnapshot.docs.map(doc => doc.id);
   
           // Fetch flashcards from each set
