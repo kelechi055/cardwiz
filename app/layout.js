@@ -1,10 +1,10 @@
-import { Hanken_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import Head from "next/head";
+import Head from 'next/head';
 import { ClerkProvider } from "@clerk/nextjs";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
-const inter = Hanken_Grotesk({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "CardWiz",
@@ -16,7 +16,10 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <Head>
-          <link rel="icon" href="/cardwizard.png" />
+          <link rel="icon" href="/favicon.ico" />
+          <meta name="description" content="Your Best Studying Companion" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>CardWiz</title>
         </Head>
         <body className={inter.className}>
           {children}

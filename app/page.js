@@ -44,6 +44,13 @@ export default function Home() {
     router.push(path);
   };
 
+  <Head>
+    <title>CardWiz</title>
+    <meta name="description" content="Your Best Studying Companion" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/cardwizard.png" />
+  </Head>
+
   return (
     <Box 
       sx={{ 
