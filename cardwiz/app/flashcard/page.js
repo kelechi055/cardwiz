@@ -4,41 +4,68 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { collection, doc, getDocs } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
-import { Box, Typography, Container, Grid, Card, CardContent, CardActionArea, AppBar, Toolbar, Button } from "@mui/material";
+import { Box, Typography, Container, Grid, Card, CardContent, CardActionArea, AppBar, Toolbar, Button, Link } from "@mui/material";
 import { db } from "@/firebase";
+import { grey } from '@mui/material/colors';
+import Image from 'next/image';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Flashcard() {
   // 1. Component Setup
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const searchParams = useSearchParams();
   const search = searchParams.get('id');
 
   // 2. Fetching Flashcards
   useEffect(() => {
-    async function getFlashcard() {
-      if (!search || !user) return;
-
+    async function fetchFlashcards() {
+      if (!user) return;
+  
       try {
-        const colRef = collection(doc(collection(db, 'users'), user.id), search);
-        const docs = await getDocs(colRef);
-        const fetchedFlashcards = [];
-
-        docs.forEach((doc) => {
-          fetchedFlashcards.push({ id: doc.id, ...doc.data() });
-        });
-
-        setFlashcards(fetchedFlashcards);
+        setLoading(true);
+  
+        // Fetch the user document
+        const userDocRef = doc(db, 'users', user.id);
+        const userDocSnap = await getDoc(userDocRef);
+  
+        if (userDocSnap.exists()) {
+          // Fetch the list of flashcard set names
+          const collectionsSnapshot = await getDocs(collection(db, 'users', user.id));
+          const flashcardSets = collectionsSnapshot.docs.map(doc => doc.id);
+  
+          // Fetch flashcards from each set
+          const allFlashcards = await Promise.all(flashcardSets.map(async (setName) => {
+            const collectionRef = collection(db, 'users', user.id, setName);
+            const snapshot = await getDocs(collectionRef);
+            
+            // Extract flashcards from the set
+            const setFlashcards = snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data() // Assuming doc.data() contains { front, back }
+            }));
+  
+            return { name: setName, flashcards: setFlashcards };
+          }));
+  
+          setFlashcards(allFlashcards);
+        } else {
+          // Create a new user document if it doesn't exist
+          await setDoc(userDocRef, {});
+          setFlashcards([]);
+        }
       } catch (error) {
         console.error('Error fetching flashcards:', error);
+      } finally {
+        setLoading(false);
       }
     }
-
-    getFlashcard();
-  }, [search, user]);
-
+  
+    fetchFlashcards();
+  }, [user]);
   // 3. Flashcard Interaction
   const handleCardClick = (id) => {
     setFlipped((prev) => ({
@@ -48,7 +75,7 @@ export default function Flashcard() {
   };
 
   if (!isLoaded || !isSignedIn) {
-    return <Typography>Loading or not signed in...</Typography>;
+    return <Typography variant="h6" color="textSecondary" align="center">Loading or not signed in</Typography>;
   }
 
   if (flashcards.length === 0) {
@@ -60,19 +87,36 @@ export default function Flashcard() {
       </Container>
     );
   }
-
+  //background: 'linear-gradient(to bottom, black 0%, #17061E 20%, #7b1fa2 80%, #7b1fa2 80%, black 100%)',
   // 4. Rendering Flashcards
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }}>
-            Flashcard Set
+    <Container maxWidth={false}
+    sx={{
+      background: 'linear-gradient(to bottom, black 0%, #17061E 20%, #7b1fa2 80%, #7b1fa2 80%, black 100%)'
+    }}
+    >
+      <AppBar position="static" sx={{ backgroundColor: 'black' }}>
+        <Toolbar sx={{ display: { xs: 'none', sm: 'flex' } }}>
+            <Button
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                p: 0 
+              }}
+              href="/" 
+            >
+              <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
+              <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff', fontWeight: 'normal', textTransform: 'none' }}>
+                CardWiz
+              </Typography>
+            </Button>
+          <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff' }}>
+            
           </Typography>
-          <Button color="inherit" href="/">Home</Button>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Container maxWidth="false" sx={{ mt: 4,  }}>
         <Box sx={{ textAlign: 'center', color: 'white', mb: 4 }}>
           <Typography
             variant="h1"
@@ -103,7 +147,7 @@ export default function Flashcard() {
                   },
                   borderRadius: 2,
                   overflow: 'hidden',
-                  backgroundColor: flipped[flashcard.id] ? 'purple' : 'white', // Front side white, back side purple
+                  backgroundImage: flipped[flashcard.id] ? 'linear-gradient(to bottom, black 0%, purple 100%)' : 'none', // Front side none, back side gradient
                   color: flipped[flashcard.id] ? 'white' : 'black', // Front side black text, back side white text
                 }}
                 onClick={() => handleCardClick(flashcard.id)}
@@ -135,7 +179,37 @@ export default function Flashcard() {
             </Grid>
           ))}
         </Grid>
+                {/* Footer */}
+                <Box sx={{ py: 1, textAlign: 'center' }}>
+          <Typography 
+            variant="h1" 
+            color={grey[500]}
+            sx={{ 
+              color: '#E0E0E0', 
+              fontFamily: 'Inter',
+              fontWeight: 'light',
+              fontSize: { xs: '0.75rem', sm: '0.875rem', md: '1rem' }
+            }}
+          >
+            <br></br>
+            <br></br>
+            © 2024 CardWiz. Built by{' '}
+            <Link 
+              href="https://linkedin.com/in/kelechi-opurum" 
+              color="inherit" 
+              underline="hover" 
+              sx={{ 
+                fontWeight: 'bold', 
+                color: 'white'
+              }}
+            >
+              Kelechi
+            </Link> 
+            . All rights reserved.
+          </Typography>
+        </Box>
       </Container>
+    </Container>  
     </>
   );
 }

@@ -82,7 +82,7 @@ export default function Home() {
           <SignedOut>
             <Button 
               color="inherit" 
-              href="#home" 
+              href="/" 
               sx={{ 
                 fontWeight: 'normal', 
                 textTransform: 'none',
@@ -249,7 +249,7 @@ export default function Home() {
         <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle} onKeyDown={handleDrawerToggle}>
         <List>
               <SignedOut>
-                <ListItem button component="a" href="/#home">Home</ListItem>
+                <ListItem button component="a" href="/">Home</ListItem>
                 <ListItem button component="a" href="/#features">Features</ListItem>
                 <ListItem button component="a" href="/#pricing">Pricing</ListItem>
                 <ListItem button component="a" href="/sign-in">Login</ListItem>
@@ -416,7 +416,7 @@ export default function Home() {
               <Image src="/review.png" width={50} height={50} alt="Effective Review System" />
               <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Effective Review System</Typography>
               <Typography sx={{ mt: 1 }}>
-                Revisit important topics at optimal times to enhance your retention and mastery.
+                You can save and Revisit important topics at optimal times to enhance your retention and mastery.
               </Typography>
             </CardContent>
           </Card>
@@ -654,7 +654,7 @@ export default function Home() {
                 transform: 'scale(1.05)',
               }
           }} 
-          href="/generate"
+          href="/sign-up"
         >
           Join Beta! ✨
         </Button>

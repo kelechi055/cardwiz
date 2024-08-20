@@ -400,7 +400,7 @@ export default function Generate() {
             <TextField
               value={text}
               onChange={(e) => setText(e.target.value)}
-              label="Make flashcards on any topic... 🔮"
+              label="Make flashcards from anything...🔮"
               fullWidth
               multiline
               rows={4}
