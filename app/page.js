@@ -12,6 +12,40 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Analytics } from "@vercel/analytics/react"
 
 export default function Home() {
+
+
+  //GOOGLE ANALYTICS
+  (function() {
+    // Create a script element
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtag/js?id=G-8YNDWHZL4M";
+    
+    // Append the script to the document head
+    document.head.appendChild(script);
+  
+    // Initialize the dataLayer and gtag function
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Initialize Google Analytics with your measurement ID
+    gtag('js', new Date());
+    gtag('config', 'G-8YNDWHZL4M');
+  })();
+
+
+  function trackButtonClick() {
+    gtag('event', 'button_click', {
+      'event_category': 'engagement',
+      'event_label': 'Sign Up Button',
+      'value': 1
+    });
+  }
+  
+  // Call this function when you need to track the event
+  trackButtonClick();
+
+
   const [open, setOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setOpen(!open);
