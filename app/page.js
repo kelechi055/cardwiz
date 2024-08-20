@@ -58,11 +58,6 @@ export default function Home() {
         margin: 0
       }}
     >
-        <Head>
-          <title>CardWiz</title>
-          <meta name="description" content="Your Best Studying Companion" />
-        </Head>
-
         {/* Navbar */}
         <AppBar position="static" sx={{ backgroundColor: 'black' }}>
         <Toolbar sx={{ display: { xs: 'none', sm: 'flex' } }}>
