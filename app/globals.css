@@ -4,7 +4,6 @@
   margin: 0;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
 
 
 body {
@@ -14,9 +13,6 @@ body {
   width: 100%;
 }
 
-.boxtext {
-  font-family: 'Nanum Pen Script', cursive;
-}
 
 @keyframes particleAnimation {
   0% {

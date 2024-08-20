@@ -1,13 +1,34 @@
 'use client';
-import Image from "next/image";
-import { SignedIn, SignedOut, UserButton, SignUp } from "@clerk/nextjs";
-import { Box, AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, ListItemText } from "@mui/material";
+import Image from 'next/image';
+import { Box, AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Head from 'next/head';
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import { useUser, SignedIn, SignedOut, UserButton, SignUp } from '@clerk/nextjs';
+import { auth, db, doc, setDoc, getDoc } from '@/firebase'; // Adjust import path if necessary
+import { useRouter } from 'next/navigation';
+
+// Function to create user document
+const createUserDocument = async (userId) => {
+  try {
+    const userDocRef = doc(db, 'users', userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      await setDoc(userDocRef, {
+        createdAt: new Date(),
+        // Add other default fields if necessary
+      });
+    }
+  } catch (error) {
+    console.error('Error creating user document:', error);
+  }
+};
 
 export default function SignUpPage() {
+  const { isLoaded, isSignedIn, user } = useUser();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const router = useRouter();
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -16,6 +37,22 @@ export default function SignUpPage() {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+
+  useEffect(() => {
+    const setupUserDocument = async () => {
+      if (isLoaded && isSignedIn && user) {
+        const userId = user.id;
+
+        // Ensure the user document is created
+        await createUserDocument(userId);
+
+        // Redirect or fetch additional data if needed
+        router.push('/flashcards'); // Example redirect
+      }
+    };
+
+    setupUserDocument();
+  }, [isLoaded, isSignedIn, user]);
 
   return (
     <Box
@@ -47,12 +84,11 @@ export default function SignUpPage() {
             href="/" 
           >
             <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
-            <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff', fontWeight: 'normal', 
-                textTransform: 'none', }}>
+            <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff', fontWeight: 'normal', textTransform: 'none' }}>
               CardWiz
             </Typography>
           </Button>
-          <Box sx={{ display: 'flex', alignItems: 'center', textTransform: 'none', }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', textTransform: 'none' }}>
             <SignedOut>
               <Button 
                 color="inherit" 
@@ -90,7 +126,7 @@ export default function SignUpPage() {
                   textTransform: 'none',
                   color: '#999999',
                   '&:hover': {
-                    color: '#f1f1f1',
+                    color: '#f1f1f1'
                   }
                 }}
               >
@@ -126,7 +162,7 @@ export default function SignUpPage() {
             href="/" 
           >
             <Image src="/cardwizard.png" alt="CardWiz Logo" width={40} height={40} style={{ marginRight: '16px' }} />
-            <Typography variant="h6" sx={{ color: '#fff', textTransform: 'none', }}>
+            <Typography variant="h6" sx={{ color: '#fff', textTransform: 'none' }}>
               CardWiz
             </Typography>
           </Button>

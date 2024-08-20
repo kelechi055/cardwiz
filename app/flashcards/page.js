@@ -54,35 +54,32 @@ export default function Flashcards() {
     }
   }, [isLoaded, isSignedIn, router]);
 
-  // Fetching Flashcards Function
   const fetchFlashcards = async () => {
     if (!user) return;
   
     try {
       setLoading(true);
   
-      // Reference to the user's document
       const userDocRef = doc(db, 'users', user.id);
       const userDocSnap = await getDoc(userDocRef);
   
-      if (userDocSnap.exists()) {
-        // Fetch the flashcard sets collection
-        const flashcardSetsCollectionRef = collection(userDocRef, 'flashcardSets');
-        const flashcardSetsSnap = await getDocs(flashcardSetsCollectionRef);
-  
-        // Extract flashcard sets data
-        const flashcardSets = flashcardSetsSnap.docs.map(setDoc => ({
-          id: setDoc.id,
-          ...setDoc.data() // Assuming doc.data() contains { name }
-        }));
-  
-        setFlashcards(flashcardSets);
-      } else {
-        console.log('User document does not exist');
-        setFlashcards([]);
+      if (!userDocSnap.exists()) {
+        // Create a new document for the user if it doesn't exist
+        await setDoc(userDocRef, { createdAt: new Date() });
+        console.log('User document created.');
       }
+  
+      const flashcardSetsCollectionRef = collection(userDocRef, 'flashcardSets');
+      const flashcardSetsSnap = await getDocs(flashcardSetsCollectionRef);
+  
+      const flashcardSets = flashcardSetsSnap.docs.map(setDoc => ({
+        id: setDoc.id,
+        ...setDoc.data()
+      }));
+  
+      setFlashcards(flashcardSets);
     } catch (error) {
-      console.error('Error fetching flashcards:', error);
+      console.error('Error fetching flashcards:', error.message);
     } finally {
       setLoading(false);
     }
