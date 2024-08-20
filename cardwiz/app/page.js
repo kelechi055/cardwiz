@@ -241,7 +241,6 @@ export default function Home() {
       </Toolbar>
       </AppBar>
       
-      {/* Drawer */}
       <Drawer
         anchor="right"
         open={open}
