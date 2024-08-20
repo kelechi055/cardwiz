@@ -132,6 +132,8 @@ export default function Generate() {
       const flashcardsCollectionRef = collection(setDocRef, 'flashcards');
       
       const batch = writeBatch(db);
+      // Redirect to the saved flashcards page after saving the flashcards
+      router.push('/flashcards')
       
       // Add each flashcard to the batch
       flashcards.forEach((flashcard, index) => {

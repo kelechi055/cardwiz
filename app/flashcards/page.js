@@ -6,6 +6,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { grey } from '@mui/material/colors';
+
 import {
   Container,
   Typography,
@@ -53,40 +54,41 @@ export default function Flashcards() {
     }
   }, [isLoaded, isSignedIn, router]);
 
-  useEffect(() => {
-    async function fetchFlashcards() {
-      if (!user) return;
+  // Fetching Flashcards Function
+  const fetchFlashcards = async () => {
+    if (!user) return;
   
-      try {
-        setLoading(true);
+    try {
+      setLoading(true);
   
-        // Reference to the user's document
-        const userDocRef = doc(db, 'users', user.id);
-        const userDocSnap = await getDoc(userDocRef);
+      // Reference to the user's document
+      const userDocRef = doc(db, 'users', user.id);
+      const userDocSnap = await getDoc(userDocRef);
   
-        if (userDocSnap.exists()) {
-          // Fetch the flashcard sets collection
-          const flashcardSetsCollectionRef = collection(userDocRef, 'flashcardSets');
-          const flashcardSetsSnap = await getDocs(flashcardSetsCollectionRef);
+      if (userDocSnap.exists()) {
+        // Fetch the flashcard sets collection
+        const flashcardSetsCollectionRef = collection(userDocRef, 'flashcardSets');
+        const flashcardSetsSnap = await getDocs(flashcardSetsCollectionRef);
   
-          // Extract flashcard sets data
-          const flashcardSets = flashcardSetsSnap.docs.map(setDoc => ({
-            id: setDoc.id,
-            ...setDoc.data() // Assuming doc.data() contains { name }
-          }));
+        // Extract flashcard sets data
+        const flashcardSets = flashcardSetsSnap.docs.map(setDoc => ({
+          id: setDoc.id,
+          ...setDoc.data() // Assuming doc.data() contains { name }
+        }));
   
-          setFlashcards(flashcardSets);
-        } else {
-          console.log('User document does not exist');
-          setFlashcards([]);
-        }
-      } catch (error) {
-        console.error('Error fetching flashcards:', error);
-      } finally {
-        setLoading(false);
+        setFlashcards(flashcardSets);
+      } else {
+        console.log('User document does not exist');
+        setFlashcards([]);
       }
+    } catch (error) {
+      console.error('Error fetching flashcards:', error);
+    } finally {
+      setLoading(false);
     }
-  
+  };
+
+  useEffect(() => {
     fetchFlashcards();
   }, [user]);
 
@@ -104,16 +106,16 @@ export default function Flashcards() {
     setEditDialogOpen(true);
   };
 
-  const handleDeleteClick = async (flashcardName) => {
-    if (confirm(`Are you sure you want to delete "${flashcardName}"?`)) {
+  const handleDeleteClick = async (setId) => {
+    if (confirm(`Are you sure you want to delete this flashcard set?`)) {
       try {
-        const docRef = doc(db, 'users', user.id);
-        const docSnap = await getDoc(docRef);
-        const currentData = docSnap.data();
-        const updatedSets = currentData.flashcardSets.filter(fc => fc.name !== flashcardName);
-        await setDoc(docRef, { flashcardSets: updatedSets });
-        setFlashcards(updatedSets);
-        setSnackbarMessage(`Flashcard set "${flashcardName}" deleted.`);
+        const docRef = doc(db, 'users', user.id, 'flashcardSets', setId);
+        await deleteDoc(docRef);
+  
+        // Refresh the flashcard sets after deletion
+        fetchFlashcards();
+  
+        setSnackbarMessage(`Flashcard set deleted.`);
         setSnackbarOpen(true);
       } catch (error) {
         console.error('Error deleting flashcard set:', error);
@@ -126,16 +128,18 @@ export default function Flashcards() {
   };
 
   const handleEditSave = async () => {
-    if (!selectedFlashcard) return;
+    if (!selectedFlashcard || !newName) return;
+  
     try {
-      const docRef = doc(db, 'users', user.id);
-      const docSnap = await getDoc(docRef);
-      const currentData = docSnap.data();
-      const updatedSets = currentData.flashcardSets.map(fc =>
-        fc.name === selectedFlashcard.name ? { ...fc, name: newName } : fc
-      );
-      await setDoc(docRef, { flashcardSets: updatedSets });
-      setFlashcards(updatedSets);
+      // Get the document reference for the selected flashcard set
+      const docRef = doc(db, 'users', user.id, 'flashcardSets', selectedFlashcard.id);
+      
+      // Update the name of the flashcard set document
+      await updateDoc(docRef, { name: newName });
+  
+      // Refresh the flashcard sets after update
+      fetchFlashcards();
+  
       setSnackbarMessage(`Flashcard set renamed to "${newName}".`);
       setSnackbarOpen(true);
       handleEditDialogClose();
@@ -143,6 +147,7 @@ export default function Flashcards() {
       console.error('Error updating flashcard set name:', error);
     }
   };
+  
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -410,40 +415,64 @@ export default function Flashcards() {
                         display: 'flex',
                         flexDirection: 'column',
                         boxShadow: 3,
+                        backgroundImage: 'url(/flashcard.jpg)', // Use the image file
+                        backgroundSize: 'cover', // Ensure the image covers the entire container
+                        backgroundPosition: 'center', // Center the image
                         transition: 'transform 0.3s ease',
                         '&:hover': {
                           transform: 'scale(1.05)',
                         },
-                        borderRadius: 2,
+                        borderRadius: 10,
                         overflow: 'hidden',
                       }}
                     >
                       <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
-                        <CardContent sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Typography variant="h5" component="div" sx={{ color: 'purple', fontFamily: 'Inter', fontWeight: 'bold' }}>
+                        <CardContent
+                          sx={{
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative', // Make it relative to position delete image
+                          }}
+                        >
+                          <br></br>
+                          <Typography
+                            variant="h5"
+                            component="div"
+                            sx={{
+                              color: 'purple',
+                              fontFamily: 'Inter',
+                              fontWeight: 'bold',
+                              position: 'absolute', // Position the text
+                            }}
+                          >
                             {flashcard.name}
                           </Typography>
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              left: '30px', // Adjust as needed
+                              top: '10px', // Adjust as needed
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Button
+                              onClick={(event) => {
+                                event.stopPropagation(); // Prevents the click from propagating to CardActionArea
+                                handleDeleteClick(flashcard.name);
+                              }}
+                              sx={{
+                                p: 0, // Remove default padding
+                                minWidth: 'auto', // Remove min-width for better image display
+                              }}
+                            >
+                              <img src="/delete.png" alt="Delete" style={{ width: '24px', height: '24px' }} />
+                            </Button>
+                          </Box>
                         </CardContent>
                       </CardActionArea>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 1 }}>
-                        <Button onClick={() => handleEditClick(flashcard)} color="primary"
-                          sx={{
-                            textTransform: 'none',
-                            fontWeight: 'bold'
-                          }} 
-                          >
-                          Edit
-                        </Button>
-                        <Button onClick={() => handleDeleteClick(flashcard.name)} color="secondary"
-                          sx={{
-                            textTransform: 'none',
-                            color:'red',
-                            fontWeight: 'bold'
-                          }}
-                          >
-                          Delete
-                        </Button>
-                      </Box>
                     </Card>
                   </Grid>
                 ))}
