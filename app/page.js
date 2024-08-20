@@ -93,6 +93,15 @@ export default function Home() {
         <Head>
           <title>CardWiz</title>
           <meta name="description" content="Your Best Studying Companion" />
+          {/* Google Analytics */}
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YNDWHZL4M"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments)};
+            gtag('js', new Date());
+
+            gtag('config', 'G-8YNDWHZL4M');
+          </script>
         </Head>
 
         {/* Navbar */}
