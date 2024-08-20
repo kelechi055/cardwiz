@@ -77,7 +77,7 @@ export default function Home() {
               </Typography>
             </Button>
           <Typography variant="h6" sx={{ flexGrow: 1, color: '#fff' }}>
-            
+          
           </Typography>
           <SignedOut>
             <Button 
@@ -241,6 +241,7 @@ export default function Home() {
       </Toolbar>
       </AppBar>
       
+      {/* Drawer */}
       <Drawer
         anchor="right"
         open={open}
