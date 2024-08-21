@@ -1,18 +1,20 @@
 # CardWiz 🧙‍♂️
 
-**Your AI Studying Companion**
+**Your AI Studying Companion 🤖**
 
 CardWiz is an AI-powered flashcard app designed to make learning and memorization more efficient and fun. Whether you're preparing for exams or just love learning new things, CardWiz helps you create, manage, and study flashcards anytime, anywhere.
 
 ## Features 🤩
 
-- **AI-Powered Flashcards:** Automatically generate flashcards from any content.
+- 📝**AI-Powered Flashcards:** Automatically generate flashcards from any content.
 - **Custom Sets:** Create and manage personalized flashcard sets with ease.
-- **Spaced Repetition:** Save and access flashcard sets, anytime, anywhere. 
-- **Responsive Design:** Study on the go with a design that looks great on all devices.
-- **User-Friendly Interface:** Intuitive and easy-to-use, making your study sessions productive.
+- 🔄**Spaced Repetition:** Save and access flashcard sets, anytime, anywhere. 
+- 📱**Responsive Design:** Study on the go with a design that looks great on all devices.
+- 👤**User-Friendly Interface:** Intuitive and easy-to-use, making your study sessions productive.
 
 ## Tech Stack 💻
 
-- **Frontend:** React, Next.js, Material UI, JavaScript
-- **Backend:** Firebase Firestore, Clerk.js, JavaScript
+- 🖌️**Frontend:** React, Next.js, Material UI, JavaScript
+- 📊**Backend:** Firebase, JavaScript, Clerk, Stripe, Google Gemini
+
+![Cardwiz Demo Graphic](https://github.com/user-attachments/assets/6f2a9ab3-ec03-4fa0-bb03-5d6eb1165d6d)
