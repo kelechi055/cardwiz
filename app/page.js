@@ -759,8 +759,8 @@ export default function Home() {
         </Button>
         <br></br>
         <br></br>
-        <Typography color={'#E0E0E0'} fontSize={'1rem'} fontFamily={'Inter'}  >
-          Join and enjoy exclusive early access to premium features for a month.
+        <Typography color={'#E0E0E0'} fontSize={'1rem'} fontFamily={'Inter'}>
+          Join and enjoy exclusive early access to <span className="rainbow-text">premium</span> features for a month.
         </Typography>
       </Box>
       
