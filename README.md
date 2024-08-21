@@ -17,4 +17,4 @@ CardWiz is an AI-powered flashcard app designed to make learning and memorizatio
 - 🖌️**Frontend:** React, Next.js, Material UI, JavaScript
 - 📊**Backend:** Firebase, JavaScript, Clerk, Stripe, Google Gemini
 
-![Cardwiz Demo Graphic](https://github.com/user-attachments/assets/6f2a9ab3-ec03-4fa0-bb03-5d6eb1165d6d)
+![Cardwiz Demo Graphic](https://i.ibb.co/1K2tGjs/Cardwiz.png)
