@@ -45,6 +45,28 @@ export default function Home() {
     router.push(path);
   };
 
+  {/*PREVENT RIGHT CLICK/IMAGE SAVING*/}
+    const images = document.querySelectorAll('.image');
+
+    images.forEach(image => {
+        // Prevent right-click context menu on images
+        image.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Prevent drag and drop
+        image.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
+    });
+
+    // Prevent right-click context menu on the entire page
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    });
+
   <Head>
     <title>CardWiz</title>
     <meta name="description" content="Your Best Studying Companion" />
@@ -705,5 +727,7 @@ export default function Home() {
       </Typography>
       </Box>
     </Box>
+
+    
   );
 }

@@ -11,7 +11,8 @@ export default function TrustedBy() {
     marginRight: '-20px',  // Overlap effect
     transition: 'transform 0.3s ease-in-out',  // Smooth transition for hover effect
     zIndex: 1,  // Ensures the avatars overlap correctly
-    animation: 'slideUp 1s ease-out',  // Apply slide-up animation
+    animation: 'slideUp 1s ease-out', 
+    pointerEvents: 'visibleFill',
   };
 
   const badgeStyle = {
@@ -24,7 +25,8 @@ export default function TrustedBy() {
     boxShadow: '0 0 0 2px #3F3F46',  // Grey outline
     color: 'white',
     textAlign: 'center',
-    animation: 'fadeIn 1s ease-in-out',  // Apply slide-up animation
+    animation: 'fadeIn 1s ease-in-out',
+    pointerEvents: 'none', 
   };
 
   const handleMouseEnter = (e) => {
