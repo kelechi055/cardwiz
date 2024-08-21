@@ -659,7 +659,7 @@ export default function Home() {
             px: 2 
           }}
         >
-          Take the next step towards success and join countless students who are excelling with our powerful study tools. 
+          Take the next step towards success and join hundreds of students who are excelling with our powerful study tools. 
           Empower yourself with customized flashcards and innovative strategies designed to make learning more effective and engaging.
         </Typography>
         <TrustedBy />
