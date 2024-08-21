@@ -374,7 +374,7 @@ export default function Home() {
         }}
       >
         <br />
-        Dominate  
+        Study For&nbsp;
         <span 
           id="dynamic-word"
           className={getCurrentColor()} 
