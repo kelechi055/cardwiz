@@ -1,4 +1,5 @@
 "use client";
+import { Typography } from "@mui/material";
 import React from "react";
 
 export default function TrustedBy() {
@@ -39,6 +40,16 @@ export default function TrustedBy() {
         `}
       </style>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '16px' }}>
+        <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontWeight: '500',
+                    fontSize: '16px',
+                    color: '#9CA3AF',
+                  }}
+        >
+          Trusted By &nbsp;
+        </Typography>
         <img
           src="https://media.licdn.com/dms/image/v2/D4E03AQFU2BIcdXp8qQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720147128448?e=1729728000&v=beta&t=KBPMNnTIS4YclNrIrD0xZoIr03uxLQyBRWsh6Yiys9w"
           alt="Avatar 1"

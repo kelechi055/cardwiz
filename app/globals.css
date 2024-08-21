@@ -8,8 +8,6 @@
   font-family: 'Inter', Arial, sans-serif;
 }
 
-
-
 body {
   margin: 0;
   padding: 0;
@@ -17,6 +15,83 @@ body {
   width: 100%;
   font-family: 'Inter', Arial, sans-serif;
 }
+
+@keyframes SlidesDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#dynamic-word {
+  border-right: 2px solid transparent;
+  margin-left: 10px;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+#cursor {
+  display: inline-block;
+  animation: blink 0.75s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes rainbow-animation {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* Apply the gradient and animation */
+.rainbow-text {
+  background: linear-gradient(90deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline;
+  animation: rainbow-animation 1s linear infinite;
+}
+
+@keyframes rainbow-animation2 {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*Key frames*/
 

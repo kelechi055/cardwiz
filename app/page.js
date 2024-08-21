@@ -1,9 +1,11 @@
 'use client';
 import Image from "next/image";
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'; 
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Container, AppBar, Toolbar, Typography, Button, Box, Grid, Card, CardContent, Link, MenuItem, IconButton, Drawer, List, ListItem } from "@mui/material";
+import ReactDOM from 'react-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Head from 'next/head';
 import getStripe from '@/utils/get-stripe';
 import { grey } from "@mui/material/colors";
@@ -71,6 +73,42 @@ export default function Home() {
       });
   }, []); 
 
+    //TEXT ANIMATION
+    const getCurrentColor = () => {
+      const currentIndex = loopNum % colors.length;
+      return colors[currentIndex];
+    };
+    const words = ["Exams", "Interviews", "School", "Anything"];
+    const colors = ["#FF5733", "#3357FF", "#F1C40F", "rainbow-text"]; 
+    
+    const [currentWord, setCurrentWord] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [loopNum, setLoopNum] = useState(0);
+    const [typingSpeed, setTypingSpeed] = useState(150);
+  
+    useEffect(() => {
+      const handleTyping = () => {
+        const currentIndex = loopNum % words.length;
+        const fullText = words[currentIndex];
+  
+        setCurrentWord((prev) =>
+          isDeleting ? fullText.substring(0, prev.length - 1) : fullText.substring(0, prev.length + 1)
+        );
+  
+        setTypingSpeed(isDeleting ? 100 : 150);
+  
+        if (!isDeleting && currentWord === fullText) {
+          setTimeout(() => setIsDeleting(true), 500);
+        } else if (isDeleting && currentWord === "") {
+          setIsDeleting(false);
+          setLoopNum(loopNum + 1);
+        }
+      };
+  
+      const timer = setTimeout(handleTyping, typingSpeed);
+  
+      return () => clearTimeout(timer);
+    }, [currentWord, isDeleting, loopNum, typingSpeed, words]);
 
   <Head>
     <title>CardWiz</title>
@@ -302,41 +340,67 @@ export default function Home() {
       {/* Navbar End*/}
 
       {/* Hero Section */}
-      <Box id="home" sx={{ flex: 1, textAlign: 'center', my: 4, color: 'white' }}>
-      <Typography 
-        variant="h1" 
-        component="h1" 
-        gutterBottom 
-        sx={{ 
-          fontWeight: 'bold', 
-          fontFamily: 'Inter',
-          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' }, 
-          lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
-          animation: 'slideDown 2s ease-in-out',
-          mx: { xs: 2, sm: 4 }, 
-          px: 2 
+      <Box id="home" sx={{ flex: 1, textAlign: 'center', my: 4, color: 'white', font: 'Inter' }}>
+      <br></br>
+      <buttons
+        style={{
+          background: 'linear-gradient(to left, #CE4C9E, #4B0082, #9400D3)',
+          backgroundSize: '200% 200%',
+          animation: 'rainbow-animation 10s ease infinite',
+          padding: '10px 20px',
+          border: 'none',
+          borderRadius: '50px',
+          color: 'white',
+          cursor: 'pointer',
+          fontSize: '12px',
         }}
       >
-        <br></br>
-        <br></br>
-        Dominate Exams
-      </Typography>
-      <Typography 
-        variant="h1" 
-        component="h1" 
-        gutterBottom 
-        sx={{ 
-          fontWeight: 'bold', 
+        🎉 | Introducing CardWiz
+      </buttons>
+      <Typography
+        variant="h1"
+        component="h1"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
           fontFamily: 'Inter',
-          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' }, 
+          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' },
+          lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
+          animation: 'SlidesDown 2s ease-in-out',
+          mx: { xs: 2, sm: 4 },
+          px: 2,
+          whiteSpace: 'nowrap',
+          position: 'relative',
+        }}
+      >
+        <br />
+        Dominate  
+        <span 
+          id="dynamic-word"
+          className={getCurrentColor()} 
+          
+        >
+          {currentWord}
+        </span>
+        <span id="cursor">|</span>
+      </Typography>
+      <Typography
+        variant="h1"
+        component="h1"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          fontFamily: 'Inter',
+          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' },
           lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
           animation: 'slideDown 2s ease-in-out',
-          mx: { xs: 2, sm: 4 }, 
-          px: 2 
+          mx: { xs: 2, sm: 4 },
+          px: 2,
         }}
       >
         With <span style={{ color: '#7720A0' }}>AI</span>.
-    </Typography>
+      </Typography>
+      
 
         <br></br>
         <br></br>
@@ -395,7 +459,7 @@ export default function Home() {
       sx={{ 
         my: 4, 
         color: 'white', 
-        px: { xs: 2, sm: 3, md: 4 },  // Added padding for different screen sizes
+        px: { xs: 2, sm: 3, md: 4 },  
       }}
     >
       <Typography 
