@@ -11,6 +11,7 @@ import { Inter } from "next/font/google";
 import TrustedBy from "@/components/trusted";
 import MenuIcon from '@mui/icons-material/Menu';
 import { Analytics } from "@vercel/analytics/react"
+import { useEffect } from 'react';
 
 export default function Home() {
   const [open, setOpen] = React.useState(false);
@@ -46,26 +47,30 @@ export default function Home() {
   };
 
   {/*PREVENT RIGHT CLICK/IMAGE SAVING*/}
-    const images = document.querySelectorAll('.image');
+    useEffect(() => {
+      // Prevent right-click and drag on images
+      const images = document.querySelectorAll('.image');
 
-    images.forEach(image => {
-        // Prevent right-click context menu on images
-        image.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
+      images.forEach(image => {
+          // Prevent right-click context menu on images
+          image.addEventListener('contextmenu', function(e) {
+              e.preventDefault();
+          });
 
-        // Prevent drag and drop
-        image.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-        });
-    });
+          // Prevent drag and drop
+          image.addEventListener('dragstart', function(e) {
+              e.preventDefault();
+          });
+      });
 
-    // Prevent right-click context menu on the entire page
-    document.addEventListener('contextmenu', function(e) {
-        if (e.target.tagName === 'IMG') {
-            e.preventDefault();
-        }
-    });
+      // Prevent right-click context menu on the entire page
+      document.addEventListener('contextmenu', function(e) {
+          if (e.target.tagName === 'IMG') {
+              e.preventDefault();
+          }
+      });
+  }, []); 
+
 
   <Head>
     <title>CardWiz</title>
