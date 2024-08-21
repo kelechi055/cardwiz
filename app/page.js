@@ -364,7 +364,7 @@ export default function Home() {
         sx={{
           fontWeight: 'bold',
           fontFamily: 'Inter',
-          fontSize: { xs: '2.5rem', sm: '3rem', md: '4.5rem' },
+          fontSize: { xs: '2.170rem', sm: '3rem', md: '4.5rem' },
           lineHeight: { xs: '3rem', sm: '3.5rem', md: '4.5rem' },
           animation: 'SlidesDown 2s ease-in-out',
           mx: { xs: 2, sm: 4 },
