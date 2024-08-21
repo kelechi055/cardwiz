@@ -8,6 +8,7 @@ import Head from 'next/head';
 import getStripe from '@/utils/get-stripe';
 import { grey } from "@mui/material/colors";
 import { Inter } from "next/font/google";
+import TrustedBy from "@/components/trusted";
 import MenuIcon from '@mui/icons-material/Menu';
 import { Analytics } from "@vercel/analytics/react"
 
@@ -330,7 +331,8 @@ export default function Home() {
         >
           Elevate your exam preparation with our dynamic ai-powered flashcards, expertly designed to optimize learning and improve retention. 
         </Typography>
-
+        <br></br>
+        <TrustedBy />
         <br></br>
         <br></br>
         <br></br>
@@ -638,7 +640,7 @@ export default function Home() {
           Take the next step towards success and join countless students who are excelling with our powerful study tools. 
           Empower yourself with customized flashcards and innovative strategies designed to make learning more effective and engaging.
         </Typography>
-        <br></br>
+        <TrustedBy />
         <br></br>
         <br></br>
         <Button 
