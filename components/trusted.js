@@ -40,21 +40,21 @@ export default function TrustedBy() {
       </style>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '16px' }}>
         <img
-          src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJrcjlzaklHaUFmMWQ4QjhuTkdBcENDc1k5TiJ9?width=80"
+          src="https://media.licdn.com/dms/image/v2/D4E03AQFU2BIcdXp8qQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720147128448?e=1729728000&v=beta&t=KBPMNnTIS4YclNrIrD0xZoIr03uxLQyBRWsh6Yiys9w"
           alt="Avatar 1"
           style={{ ...avatarStyle, marginRight: '-10px', zIndex: 2 }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
         <img
-          src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ya3daM0JiSFRoRk1BZkFzdG95TGlhUXlDZjMifQ"
+          src="https://media.licdn.com/dms/image/v2/D4E03AQHmPO8V6R8DPQ/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1712209528733?e=1729728000&v=beta&t=sLo_J2uBMWgVMlxJHUUycu5TiIA6TYxX9x09OIVzR0s"
           alt="Avatar 2"
           style={{ ...avatarStyle, marginRight: '-14px', zIndex: 2 }}  
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         />
         <img
-          src="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ya3dWVHVvVFhKYlNrSGpqQXBtMGNzaFZPNVYifQ"
+          src="https://media.licdn.com/dms/image/v2/D4E03AQFErTyrmTumKg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1709171673701?e=1729728000&v=beta&t=5G1MRPgkZVIf8c1_Z1CwzWU1IHdiQ7RUBVI6r5Q3LR8"
           alt="Avatar 3"
           style={{ ...avatarStyle, marginRight: '-13px', zIndex: 3 }}  
           onMouseEnter={handleMouseEnter}
