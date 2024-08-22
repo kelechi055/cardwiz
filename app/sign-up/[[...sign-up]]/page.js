@@ -239,6 +239,8 @@ export default function SignUpPage() {
             Welcome to CardWiz! Sign Up to access your account.
           </Typography>
           <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
+          <RedirectToSignIn signInFallbackRedirectUrl="/generate" />
+          <RedirectToSignUp signUpFallbackRedirectUrl="/generate" />
         </Box>
       </Box>
     </Box>
