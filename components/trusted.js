@@ -51,7 +51,7 @@ export default function TrustedBy() {
           Trusted By &nbsp;
         </Typography>
         <img
-          src="https://media.licdn.com/dms/image/v2/D4E03AQFU2BIcdXp8qQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720147128448?e=1729728000&v=beta&t=KBPMNnTIS4YclNrIrD0xZoIr03uxLQyBRWsh6Yiys9w"
+          src="https://i.pravatar.cc/3050000"
           alt="Avatar 1"
           style={{ ...avatarStyle, marginRight: '-10px', zIndex: 2 }}
           onMouseEnter={handleMouseEnter}
