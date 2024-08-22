@@ -4,8 +4,8 @@ import { Box, AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, Lis
 import MenuIcon from '@mui/icons-material/Menu';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
+import { auth, db, doc, setDoc, getDoc } from '@/firebase'; 
 import { useUser, SignedIn, SignedOut, UserButton, SignUp } from '@clerk/nextjs';
-import { auth, db, doc, setDoc, getDoc } from '@/firebase'; // Adjust import path if necessary
 import { useRouter } from 'next/navigation';
 
 // Function to create user document
