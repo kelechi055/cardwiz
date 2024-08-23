@@ -81,6 +81,7 @@ export default function Home() {
     const words = ["Exams", "Interviews", "School", "Anything"];
     const colors = ["#FF5733", "#3357FF", "#F1C40F", "rainbow-text"]; 
     
+    
     const [currentWord, setCurrentWord] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [loopNum, setLoopNum] = useState(0);
@@ -398,9 +399,13 @@ export default function Home() {
           px: 2,
         }}
       >
-        With <span style={{ color: '#7720A0' }}>AI</span>.
+        With <span style={{
+          background: 'linear-gradient(90deg, #e100ff, #4B0082, #9400D3)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}>AI</span>.
       </Typography>
-      
 
         <br></br>
         <br></br>
@@ -486,36 +491,36 @@ export default function Home() {
       <br></br>
       <Grid container spacing={4} justifyContent="center">
         <Grid item xs={12} sm={6} md={4}>
-          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'translateY(-20px)' } }}>
             <CardContent>
               <Image src="/flash.png" width={50} height={50} alt="Dynamic Flashcards" />
               <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Dynamic Flashcards</Typography>
               <Typography sx={{ mt: 1 }}>
-                CardWiz AI transforms your text into concise, effective study tools.
+                CardWiz AI transforms your text into concise, effective study tools that are perfect for the upcoming semester
               </Typography>
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'translateY(-20px)' } }}>
             <CardContent>
               <Image src="/personal.png" width={50} height={50} alt="Personalized Study Plans" />
               <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Personalized Study Plans</Typography>
               <Typography sx={{ mt: 1 }}>
-                Customize your learning experience with plans tailored to your goals and skill level.
+                Customize your learning experience with plans tailored to your goals and skill level
               </Typography>
             </CardContent>
           </Card>
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, textAlign: 'center', height: 'auto', maxWidth: 500, m: 'auto', transition: '0.3s', '&:hover': { transform: 'translateY(-20px)' } }}>
             <CardContent>
               <Image src="/review.png" width={50} height={50} alt="Effective Review System" />
               <Typography variant='h5' sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Inter', }}>Effective Review System</Typography>
               <Typography sx={{ mt: 1 }}>
-                You can save and Revisit important topics at optimal times to enhance your retention and mastery.
+                Save and Revisit important topics at optimal times to enhance your retention and mastery
               </Typography>
             </CardContent>
           </Card>
@@ -552,7 +557,7 @@ export default function Home() {
         <br></br>
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ p: 3, color: '#808080', border: '3px solid', borderColor: '#808080', borderRadius: 2, backgroundColor: '#fff', boxShadow: 3, height: 'auto', maxWidth: 345, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+            <Card sx={{ p: 3, color: '#808080', border: '3px solid', borderColor: '#808080', borderRadius: 2, backgroundColor: '#fff', boxShadow: 3, height: 'auto', maxWidth: 345, m: 'auto', transition: '0.3s', '&:hover': { transform: 'translateY(-40px)'  } }}>
               <Typography 
                 variant='h4' 
                 gutterBottom 
@@ -614,7 +619,7 @@ export default function Home() {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ p: 3, border: '3px solid', borderColor: 'black', borderRadius: 2, backgroundColor: '#fff', boxShadow: 3, height: 'auto', maxWidth: 345, m: 'auto', transition: '0.3s', '&:hover': { transform: 'scale(1.05)' } }}>
+            <Card sx={{ p: 3, border: '3px solid', borderColor: 'black', borderRadius: 2, backgroundColor: '#fff', boxShadow: 3, height: 'auto', maxWidth: 345, m: 'auto', transition: '0.3s', '&:hover': { transform: 'translateY(-40px)' } }}>
               <Typography 
                 variant='h4' 
                 gutterBottom 
@@ -708,7 +713,7 @@ export default function Home() {
             px: 2 
           }}
         >
-          What are you waiting for?
+          What are <span className="purple-text">you</span> waiting for?
         </Typography>
         <br></br>
         <br></br>

@@ -47,13 +47,24 @@ body {
   }
 }
 
-@keyframes rainbow-animation {
+@keyframes rainbow-animation2 {
   0% {
-    background-position: 0% 0%;
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    background-position: 100% 100%;
+    background-position: 0% 50%;
   }
+}
+
+.purple-text {
+  background: linear-gradient(90deg,  #e100ff, #4B0082, #9400D3);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline;
 }
 
 /* Apply the gradient and animation */
@@ -63,10 +74,10 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline;
-  animation: rainbow-animation 1s linear infinite;
+  animation: rainbow-animation 3s linear infinite;
 }
 
-@keyframes rainbow-animation2 {
+@keyframes rainbow-animation {
   0% {
     background-position: 0% 50%;
   }
