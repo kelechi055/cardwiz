@@ -72,7 +72,7 @@ export default function TrustedBy() {
           onMouseLeave={handleMouseLeave}
         />
         <img
-          src="https://i.postimg.cc/GpM3rgGH/plus100.png"
+          src="/plus100.png"
           alt="+ 100"
           style={{ ...avatarStyle, marginRight: '0', zIndex: 4 }}  
           onMouseEnter={handleMouseEnter}
